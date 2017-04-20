@@ -1,53 +1,34 @@
 import React, { Component } from 'react'
-import Input from './Input'
+import Search from './Search'
+import Home from './Home'
+import Browse from './Browse'
 import Output from './Output'
+import Letterbar from './Letterbar'
+import NewTerm from './NewTerm'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch
+} from 'react-router-dom'
 
 class App extends Component {
-  state = {
-    results: [],
-    words: '',
-    descriptions: ''
-  }
-  componentDidMount () {
-    const url = 'https://jabberdexicon.herokuapp.com/entries?access_token=ryanvtest'
-    window.fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          results: data
-        })
-        console.log(data)
-      })
-  }
-
-  addItem = (term, description) => {
-    const url = 'https://jabberdexicon.herokuapp.com/entries?access_token=ryanvtest'
-    window.fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        entry: {
-          term: term,
-          definition: description
-        }
-      })
-    }).then(r => r.json())
-    .then(data => {
-      console.log(data)
-    })
-    this.setState({
-      results: [...this.state.results, term]
-    })
-  }
-
   render () {
-    return <div className='AppMain'>
-      <h1>The Jabberdexicon</h1>
-      <div className='display'>
-        <Input addItem={this.addItem} results={this.state.results} words={this.state.words} description={this.state.description} />
-        <Output />
+    return <Router>
+      <div className='AppMain'>
+        <h1><Link to='/'><i className='fa fa-optin-monster' aria-hidden='true' /> The Jabberdexicon <i className='fa fa-optin-monster' aria-hidden='true' /></Link></h1>
+        <div className='letterArea'><Letterbar /></div>
+        <div className='display'>
+          <Search />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route path='/entry/:slug' component={Output} />
+            <Route path='/browse/:letter' component={Browse} />
+            <Route path='/new-entry' component={NewTerm} />
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Router>
   }
 }
 

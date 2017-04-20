@@ -1,24 +1,44 @@
 import React, { Component } from 'react'
+const token = 'example'
 
-class Output extends Component {
+class Test extends Component {
+  state = {}
+
+  updateWord () {
+    const slug = this.props.match.params.slug
+    if (slug !== this.state.slug) {
+      window.fetch(`https://jabberdexicon.herokuapp.com/entries/${slug}?access_token=${token}`)
+      .then(r => r.json())
+      .then(data => {
+        this.setState({
+          ...data
+        })
+      })
+    }
+  }
+
+  componentDidMount () {
+    this.updateWord()
+  }
+
+  componentDidUpdate () {
+    this.updateWord()
+  }
+
   render () {
-    // const items = this.props.items.map((item, i) => {
-    //   return <Item
-    //     label={item.text}
-    //     done={item.complete}
-    //     toggleComplete={this.props.toggleComplete}
-    //     index={i}
-    //     key={i} />
-    // })
     return <div className='outputArea'>
-      <h2>Word:</h2>
-      <div>word</div>
-      {/* <div>{items}</div> */}
-      <h2>Description:</h2>
-      <div>description</div>
-      {/* <div>{items}</div> */}
+      <span>
+        <div className='title'>
+          <h2>{this.state.term}</h2>
+          <div className='edit'>
+            <i className='fa fa-pencil' aria-hidden='true' />
+            <i className='fa fa-trash' aria-hidden='true' />
+          </div>
+        </div>
+        <p>{this.state.definition}</p>
+      </span>
     </div>
   }
 }
 
-export default Output
+export default Test
