@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import Search from './Search'
 import Home from './Home'
 import Browse from './Browse'
+import Results from './Results'
 import Output from './Output'
 import Letterbar from './Letterbar'
 import NewTerm from './NewTerm'
+import NoMatch404 from './NoMatch404'
 import {
   BrowserRouter as Router,
   Route,
@@ -22,9 +24,11 @@ class App extends Component {
           <Search />
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route path='/entry/:slug' component={Output} />
             <Route path='/browse/:letter' component={Browse} />
+            <Route path='results/:word' component={Results} />
+            <Route path='/entry/:slug' component={Output} />
             <Route path='/new-entry' component={NewTerm} />
+            <Route component={NoMatch404} />
           </Switch>
         </div>
       </div>

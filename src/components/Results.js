@@ -1,32 +1,29 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
+const token = 'vorpal'
 
-class Browse extends Component {
-  letters = 'abcdefghijklmnopqrstuvwxyz'.split('')
+class Results extends Component {
   state = {
-    results: []
+    active: []
   }
 
   componentDidMount () {
-    const url = 'https://jabberdexicon.herokuapp.com/entries?access_token=vorpal'
+    const url = `https://jabberdexicon.herokuapp.com/entries?access_token=${token}`
     window.fetch(url)
     .then(r => r.json())
     .then(data => {
       this.setState({
-        results: data
+        active: data
       })
     })
   }
 
   render () {
-    const filtered = this.state.results.filter(item => {
-      if (this.props.match.params.letter === 'numbers') {
-        return item.term.match(/^\d/)
-      } else {
-        return item.term[0].toLowerCase() === this.props.match.params.letter
+    const filtered = this.state.active.filter(item => {
+      if (this.props.match.params.word.length !== 0) {
+        return item.term.toLowerCase().includes(this.props.match.params.word.toLowerCase())
       }
     })
-
     const words = filtered.map(word => {
       return <li key={word.id}>
         <NavLink to={`/entry/${word.slug}`}>{word.term}</NavLink>
@@ -48,4 +45,4 @@ class Browse extends Component {
   }
 }
 
-export default Browse
+export default Results
