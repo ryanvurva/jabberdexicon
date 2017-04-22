@@ -17,6 +17,7 @@ $base-font-family: sans-serif;
 
   body,
   #root {
+    box-sizing: border-box;
     min-height: 100%;
   }
 }

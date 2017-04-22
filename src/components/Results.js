@@ -1,44 +1,37 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
-const token = 'vorpal'
+// import { NavLink } from 'react-router-dom'
+// import Entry from './Entry'
+import { get } from '../api'
 
 class Results extends Component {
   state = {
+    query: null,
     active: []
   }
 
+  doSearch () {
+    const query = this.props.match.params.query
+    if (query !== this.state.query) {
+      get('/entries', query).then(entries => this.setState({ entries, query }))
+    }
+  }
+
   componentDidMount () {
-    const url = `https://jabberdexicon.herokuapp.com/entries?access_token=${token}`
-    window.fetch(url)
-    .then(r => r.json())
-    .then(data => {
-      this.setState({
-        active: data
-      })
-    })
+    this.doSearch()
+  }
+
+  componentDidUpdate () {
+    this.doSearch()
   }
 
   render () {
-    const filtered = this.state.active.filter(item => {
-      if (this.props.match.params.word.length !== 0) {
-        return item.term.toLowerCase().includes(this.props.match.params.word.toLowerCase())
-      }
-    })
-    const words = filtered.map(word => {
-      return <li key={word.id}>
-        <NavLink to={`/entry/${word.slug}`}>{word.term}</NavLink>
-      </li>
-    })
-
     return <div className='outputArea'>
       <span>
         <div className='title'>
           <h2>Results</h2>
         </div>
         <div className='results'>
-          <ul className='one-list'>
-            {words}
-          </ul>
+          {/* <Entry entries={this.state.entries} /> */}
         </div>
       </span>
     </div>
