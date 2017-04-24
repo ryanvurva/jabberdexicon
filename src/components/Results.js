@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-// import { NavLink } from 'react-router-dom'
-// import Entry from './Entry'
+import OutPut from './OutPut'
 import { get } from '../api'
 
 class Results extends Component {
   state = {
     query: null,
-    active: []
+    entries: []
   }
 
-  doSearch () {
+  find () {
     const query = this.props.match.params.query
     if (query !== this.state.query) {
       get('/entries', query).then(entries => this.setState({ entries, query }))
@@ -17,23 +16,19 @@ class Results extends Component {
   }
 
   componentDidMount () {
-    this.doSearch()
+    this.find()
   }
 
   componentDidUpdate () {
-    this.doSearch()
+    this.find()
   }
 
   render () {
-    return <div className='outputArea'>
-      <span>
-        <div className='title'>
-          <h2>Results</h2>
-        </div>
-        <div className='results'>
-          {/* <Entry entries={this.state.entries} /> */}
-        </div>
-      </span>
+    return <div className='results'>
+      <div className='title'>
+        <h2>Results for "{this.props.match.params.query}"</h2>
+      </div>
+      <OutPut entries={this.state.entries} />
     </div>
   }
 }

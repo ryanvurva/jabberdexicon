@@ -5,7 +5,7 @@ import Sample from './Sample'
 const Samples = ({ entries }) => (
   <div className='samples'>
     <h5>Example Terms:</h5>
-    <div className='random'>
+    <div className='examples'>
       <Sample entries={_.sampleSize(entries, 10)} />
     </div>
   </div>
