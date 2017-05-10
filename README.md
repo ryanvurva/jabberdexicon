@@ -1,3 +1,3 @@
 # Jabberdexicon
 
-![tech jargon glossary](jabberdexicon.gif)
+![tech jargon glossary](jebberdexicon.gif)
